@@ -3,3 +3,4 @@ bin/
 *.cbp 
 *.layout 
 obj/
+*.cpp.save-failed
