@@ -1,0 +1,51 @@
+#include <iostream>
+#include <array>
+
+/*
+    Given a single linked list of integers (l) and an integer (k),
+    remove all elements of the list (l) equal to integer (k).
+
+    ie. l = [3, 1, 2, 3, 4, 5] and k = 3 -> removeKFromList(l, k) = [1, 2, 4, 5]
+    ie. l = [1, 2, 3, 4, 5, 6, 7] and k = 10 -> removeKFromList(l, k) = [1, 2, 3, 4, 5, 6, 7]
+
+    Note: Solve in O(n) time using O(1) additional space where n is the number of elements.
+*/
+
+struct ListNode
+{
+    int value ;       // integer in a given node.
+    ListNode *next ;  // Pointer to the next node.
+};
+
+ListNode* arrayToList(const int *arr, const int len)
+{
+    // Merge loops after to do in single loop.
+    // Print input array
+    std::cout << "Input array: [ " ;
+    for (int element{0} ; element < len ; ++element)
+    {
+        std::cout << arr[element] << " " ;
+    }
+    std::cout << "]\n" ;
+
+    ListNode *root{ nullptr } ;          // Head (root). Pointer to first elemeent in list.
+    for (int element{0} ; element < len ; ++element)
+    {
+        ListNode *newOne{ new ListNode} ; // Dynamically allocate node.
+        newOne->value = arr[element] ;    // Follow pointer and access member.
+        newOne->next = root ;             // Make new entry point to next node.
+        root = newOne ;                   // Make root point to this new entry (prepending).
+    }
+    return root ;
+}
+
+int main()
+{
+    int arr[] {3, 1, 2, 3, 4, 5} ;
+    int len{ sizeof(arr)/sizeof(arr[0]) } ;
+    // std::cout << len ;
+
+    ListNode *listHead = arrayToList(arr,len) ; // Pointer to root (head) of linked list.
+
+    return 0;
+}

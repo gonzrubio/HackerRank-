@@ -1,0 +1,69 @@
+/*
+Rules: Any person in the queue can bribe the person directly in front of them to swap positions.
+
+ie.
+In:
+2
+5
+2 1 5 3 4
+5
+2 5 1 3 4
+
+Out:
+3
+Too chaotic.
+*/
+
+#include <iostream>
+
+void minimumBribes(int q_count, int* q)
+{
+    // Out: print an integer denoting the minimum number of bribes or chaotic if not possible.
+    // In: q - an array of integers.
+    // In: q_count - The number of people in the queue.
+
+    //int ans = 0 ; // Minimim number of brives (no bribes).
+    //bool chaos = false ;
+
+    int pos[q_count] ; // get original state of the line
+    for (int i = 0 ; i < q_count ; i++)
+    {
+        pos[q[i]-1] = q[i] ;
+        //std::cout << q[i] << " " ;
+    }
+
+    /*std::cout << "\n" ;
+    for (int i = 0 ; i < q_count ; i++)
+    {
+        std::cout << pos[i] << " " ;
+    }*/
+
+    /*for (int i = q_count-1 ; 0 <= i ; i--)
+    {   // If final position and original are more than two then chaotic.
+        if ( 2 < abs(q[i]-pos[i]) )
+        {
+            //chaos = true ;
+            std::cout << "Too chaotic" ;
+            break ;
+        }
+        else
+        {   // Count how many moves were needed to get it there
+            // while
+        }
+    }*/
+
+    // Start from front of queue, if more than two bribes, stop
+    // if exactly one brive, count and contitnue,
+    // if no brives continue.
+}
+
+int main()
+{
+    int n{5} ;                          // Number of people in the line.
+    int *que{ new int[n]{2,1,5,3,4} } ; // Final state of the line.
+    //int *que{ new int[n]{2,5,1,3,4} } ; // Final state of the line.
+
+    minimumBribes(n,que) ;
+
+    return 0 ;
+}
