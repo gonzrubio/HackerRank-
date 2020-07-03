@@ -3,7 +3,6 @@ Task
 Given two n-element data sets, X and Y, calculate the value of the Spearman's rank correlation coefficient.
 
 The Spearman's rank correlation coefficient is the Pearson correlation coefficient of their ranks.
-
 */
 
 #include <iostream>
@@ -60,11 +59,26 @@ void get_Rank(const std::vector<double> &X, std::vector<double> &rank_X)
     }
 }
 
+void input(std::vector<double> &X)
+{
+    for (auto &entry : X)
+    {
+        std::cin >> entry ;
+    }
+}
+
 int main()
 {
     // Hard coded for testing.
-    std::vector<double> X{10, 9.8, 8, 7.8, 7.7, 1.7, 6, 5, 1.4, 2} ;
-    std::vector<double> Y{200, 44, 32, 24, 22, 17, 15, 12, 8, 4} ;
+    // std::vector<double> X{10, 9.8, 8, 7.8, 7.7, 1.7, 6, 5, 1.4, 2} ;
+    // std::vector<double> Y{200, 44, 32, 24, 22, 17, 15, 12, 8, 4} ;
+
+    std::vector<double>::size_type n ;
+    std::cin >> n ;
+    std::vector<double> X(n) ;
+    std::vector<double> Y(n) ;
+    input(X) ;
+    input(Y) ;
 
     std::vector<double> rank_X ;
     std::vector<double> rank_Y ;
