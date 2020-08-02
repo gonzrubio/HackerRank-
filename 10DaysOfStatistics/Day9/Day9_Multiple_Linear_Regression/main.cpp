@@ -1,13 +1,8 @@
-/*
-Fit a linear model that depends on m features plus a constant, based on n different feature sets.
-
-*/
-
-
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include <limits>
+#include <algorithm>
 
 using mat2D = std::vector<std::vector<double>> ;
 using vec = std::vector<double> ;
@@ -72,10 +67,12 @@ mat2D subMatrix(const mat2D &A, const mat2D::size_type row_del, const mat2D::siz
             for (mat2D::size_type icol{0} ; icol < A.size() ; icol++)
                 {
                     if (icol != col_del) A_sub[row_sub][col_sub++] = A[irow][icol] ;
-                    if (col_sub == A.size()-1)
                     {
-                        col_sub = 0 ;
-                        row_sub++ ;
+                        if (col_sub == A.size()-1)
+                        {
+                            col_sub = 0 ;
+                            row_sub++ ;
+                        }
                     }
                 }
         }
@@ -90,6 +87,7 @@ double det(const mat2D &A)
         return std::numeric_limits<double>::quiet_NaN();
     }
 
+    if (A.size() == 1) return A[0][0] ;
     if (A.size() == 2) return A[0][0]*A[1][1]-A[0][1]*A[1][0] ;
     else
     {
@@ -102,6 +100,41 @@ double det(const mat2D &A)
     }
 }
 
+mat2D cofactor(const mat2D &A)
+{
+    mat2D C(A[0].size(), vec(A.size())) ;
+
+    for (mat2D::size_type irow{0} ; irow < A.size() ; irow++)
+    {
+        for (mat2D::size_type icol{0} ; icol < A.size() ; icol++)
+        {
+            C[irow][icol] = pow(-1,icol+irow)*det(subMatrix(A,irow,icol)) ;
+
+        }
+    }
+    return C ;
+}
+
+mat2D adjugate(const mat2D &A)
+{
+    return transpose(cofactor(A)) ;
+}
+
+mat2D inv(const mat2D &A)
+{
+    double det_A = det(A) ;
+    if (det_A == 0) std::cout << "A is not invertible.\n" ;
+
+    mat2D A_inv(A[0].size(), vec(A.size())) ;
+    mat2D A_adjugate = adjugate(A) ;
+
+    for (mat2D::size_type irow{0} ; irow < A.size() ; irow++)
+    {
+        std::transform(A_adjugate[irow].begin(), A_adjugate[irow].end(), A_inv[irow].begin(),
+                       [det_A](double elem) { return elem / det_A ; }) ;
+    }
+    return A_inv ;
+}
 
 int main()
 {
@@ -118,8 +151,11 @@ int main()
     //vec Y_obs{109.85, 155.72, 137.66, 76.17, 139.75, 162.6, 151.77} ;
     mat2D tmp = matmul(transpose(X_obs),X_obs) ;
     printMatrix(tmp) ;
-    std::cout << "\n" << det(tmp) ;
-    //printMatrix(cofactor(matmul(transpose(X_obs),X_obs))) ;
+    printMatrix(cofactor(tmp)) ;
+    printMatrix(adjugate(tmp)) ;
+    printMatrix(inv(tmp)) ;
+    std::cout <<"\n" ;
+    printMatrix(matmul(inv(tmp),tmp)) ;
 
     // Get query/print query
     /*4
