@@ -7,6 +7,11 @@
 using mat2D = std::vector<std::vector<double>> ;
 using vec = std::vector<double> ;
 
+void printAnswer(const vec &x)
+{
+    for (auto elem : x) std::cout << elem << "\n" ;
+}
+
 void printMatrix(const mat2D &A)
 {
     for (auto row : A)
@@ -136,11 +141,29 @@ mat2D inv(const mat2D &A)
     return A_inv ;
 }
 
+vec matvecmul(const mat2D &A, const vec &x)
+{
+    if (A[0].size() != x.size())
+        std::cout << "The number of columns of matrix A must agree with the number of rows in vector x.\n" ;
+
+    vec y(A.size()) ;
+    for (mat2D::size_type irow{0} ; irow < A.size() ; irow++)
+    {
+        double sum{0} ;
+        for (mat2D::size_type icol{0} ; icol < A[irow].size() ; icol++)
+        {
+            sum += A[irow][icol]*x[icol] ;
+        }
+        y[irow] = sum ;
+    }
+    return y ;
+}
+
 int main()
 {
-    // Sample hard-coded input. (abstract functions to get inputs).
-    //int m{2} ; // # of Features.
-    //int n{7} ; // # of Observations.
+    /// Sample hard-coded input.
+    vec Y_obs{109.85, 155.72, 137.66, 76.17, 139.75, 162.6, 151.77} ;
+
     mat2D X_obs = { {0.18, 0.89},
                   {1.0,  0.26},
                   {0.92, 0.11},
@@ -148,20 +171,23 @@ int main()
                   {0.85, 0.16},
                   {0.99, 0.41},
                   {0.87, 0.47} } ;
-    //vec Y_obs{109.85, 155.72, 137.66, 76.17, 139.75, 162.6, 151.77} ;
-    mat2D tmp = matmul(transpose(X_obs),X_obs) ;
-    printMatrix(tmp) ;
-    printMatrix(cofactor(tmp)) ;
-    printMatrix(adjugate(tmp)) ;
-    printMatrix(inv(tmp)) ;
-    std::cout <<"\n" ;
-    printMatrix(matmul(inv(tmp),tmp)) ;
 
-    // Get query/print query
-    /*4
-    0.49 0.18
-    0.57 0.83
-    0.56 0.64
-    0.76 0.18*/
+    mat2D X_query = { {0.49, 0.18},
+                      {0.57,  0.83},
+                      {0.56, 0.64},
+                      {0.76, 0.18} } ;
+
+    /// Need to add bias to X_obs. Do When getting user inputs.
+    //int m{2} ; // # of Features.
+    //int n{7} ; // # of Observations.
+
+    /// Analytical Least-squares solution.
+    vec w = matvecmul(matmul(inv(matmul(transpose(X_obs),X_obs)),transpose(X_obs)),Y_obs) ;
+
+    /// Forecast.
+    vec Y_pred{matvecmul(X_query,w)} ;
+
+    printAnswer(Y_pred) ;
+
     return 0 ;
 }
