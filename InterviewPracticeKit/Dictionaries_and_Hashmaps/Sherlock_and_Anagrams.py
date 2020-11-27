@@ -1,10 +1,8 @@
-"""
-Given a string s, find the number of pairs of substrings of s that are anagrams of each other.
+"""Given a string s, find the number of pairs of substrings of s that are anagrams of each other.
 1<=q<=10 - Number of queries to analyze.
 2<=|s|<=100 - Length of string.
 s in ascii[a-z] 
 """
-
 
 def sherlockAndAnagrams(s):
     """Return the number (int) of anagramatic pairs.
@@ -27,12 +25,11 @@ def sherlockAndAnagrams(s):
  
     
 def main():
-    tests = ['abba','abcd','ifailuhkqq','kkkk']
-    #for _ in range(int(input())):           # 1<=q<=10
-    for test in tests:           # 1<=q<=10
-        print(sherlockAndAnagrams(test)) # 2<=|s|<=100
-              
-    #return 0
+    #tests = ['abba','abcd','ifailuhkqq','kkkk']
+    #for test in tests:           # 1<=q<=10
+    for _ in range(int(input())):           # 1<=q<=10    
+        print(sherlockAndAnagrams(input())) # 2<=|s|<=100
+
     
 if __name__ == '__main__':
     main()
