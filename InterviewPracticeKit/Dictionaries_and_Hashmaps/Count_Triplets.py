@@ -24,12 +24,11 @@ def countTriplets(arr, r):
     return count   
 
 def main():
-    tests = [[[1, 2, 2, 4], 2],
-             [[1, 3, 9, 9, 27, 81], 6],
-             [[1, 5, 5, 25, 125], 4]]
+    tests = [[[1, 2, 2, 4], 2], # 2
+             [[1, 3, 9, 9, 27, 81], 3], # 6
+             [[1, 5, 5, 25, 125], 5]] # 4
 
     for test in tests:
-        print(test[0], test[1])
         print(countTriplets(test[0], test[1]))
     
 
