@@ -13,8 +13,7 @@ def makeAnagram(a, b):
         # remove from the string with lowest frequency
         total += min(a.count(element), b.count(element))
         
-    #return len(a)+len(b) - total*2
-    return total
+    return len(a)+len(b) - total*2
 
 def main():
     tests = [['cde','abc'],
