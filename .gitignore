@@ -4,3 +4,4 @@ bin/
 *.layout 
 obj/
 *.cpp.save-failed
+*.opendb
