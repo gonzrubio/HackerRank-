@@ -12,11 +12,10 @@
 #include <vector>
 
 
-class SinglyLinkedListNode {
-public:
+struct SinglyLinkedListNode {
     int m_data;
-    SinglyLinkedList* m_next;
-    
+    SinglyLinkedListNode* m_next;
+
     SinglyLinkedListNode(const int data) : m_data{ data }, m_next{ nullptr }
     {
     }
@@ -30,67 +29,81 @@ private:
     int m_size;
 
 public:
-    SinglyLinkedList() : m_head{nullptr}, m_tail{ nullptr } {
+    SinglyLinkedList() : m_head{ nullptr }, m_tail{ nullptr }, m_size{ 0 } 
+    {
     }
     void insert_node(const int data) {
+        // Insert node at the end of the linked list O(1).
+
         SinglyLinkedListNode* new_node = new SinglyLinkedListNode(data);
-        if (m_head) {
+        
+        if (is_empty()) {  
             m_head = new_node;
         }
+        else{
+            m_tail->m_next = new_node;
+        }
         m_tail = new_node;
+        m_size++;
     }
-    void insert_node_at(const int data, const int position) {
-
+    // void insert_node_at(const int data, const int position) {
+    // O(1)
+    // }
+    // remove at O(1)
+    // remove value O(n)
+    bool is_empty() {
+        return m_head ? false : true;
     }
     int size() {
         return m_size;
     }
     void print() {
-        std::cout << m_head->data << "->";
-
+        if (is_empty()) return; // need this here or handles empty lists automatically?
+        SinglyLinkedListNode* curr{ m_head };
+        while (curr) { // I think this handles the empty case.
+            std::cout << curr->m_data << "->";
+            curr = curr->m_next;
+        }
+        std::cout << "NULL\n";
     }
 };
 
 
-SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data, int position) {
-	/*
-     * Inputs: 
-	 * head: a SinglyLinkedListNode pointer to the head of the list
-	 * The function accepts following parameters:
-	 * data: an integer value to insert as data in your new node
-	 * position: an integer position to insert the new node, zero based indexing
-     * 
-     * Returns:
-     * SinglyLinkedListNode pointer: a reference to the head of the revised list
-	 */
-    return head;
-}
+// SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data, int position) {
+// 	/*
+//      * Inputs: 
+// 	 * head: a SinglyLinkedListNode pointer to the head of the list
+// 	 * The function accepts following parameters:
+// 	 * data: an integer value to insert as data in your new node
+// 	 * position: an integer position to insert the new node, zero based indexing
+//      * 
+//      * Returns:
+//      * SinglyLinkedListNode pointer: a reference to the head of the revised list
+// 	 */
+//     return head;
+// }
+
 
 int main()
 {
     SinglyLinkedList* llist = new SinglyLinkedList();
+    std::cout << llist->is_empty() << '\n';
+    std::cout << llist->size() << '\n';
+    llist->print();
 
     std::vector<int> nodes{ 1, 2, 3};
-    for (int i = 0; i < nodes.size(); i++) {
+    for (std::size_t i = 0; i < nodes.size(); i++) {
         llist->insert_node(nodes[i]);
     }
 
-    int data;
-    cin >> data;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::cout << llist->is_empty() << '\n';
+    std::cout << llist->size() << '\n';
+    llist->print();
 
-    int position;
-    cin >> position;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
-
-    print_singly_linked_list(llist_head, " ", fout);
-    fout << "\n";
-
-    free_singly_linked_list(llist_head);
-
-    fout.close();
+    // SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
+    // llist->size();
+    // llist->print();
 
     return 0;
 }
