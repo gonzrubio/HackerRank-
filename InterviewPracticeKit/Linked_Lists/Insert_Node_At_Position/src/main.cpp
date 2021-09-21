@@ -53,34 +53,41 @@ public:
         m_tail = new_node;
         m_size++;
     }
-    void insert_node_at(const int data, const int position) {
+    void insert_node_at(const int data, int position) {
         // Insert node at 'position' jumps from head O(1)
 
         // Bounds check
         if (position < 0 || position > m_size) {
             std::cout << "Specified position is out of bounds\n";
-            return;
         }
-        
-        // Insert to an empty list or at the end of the list
-        if (is_empty() || (position == m_size)) {
-            insert_node(data);
-            return;
-        }
+        else {
 
-        // Insert anywhere else
-        //int curr_pos{ 0 };
-        //while (curr_pos < position + 1) {
-        //    if (curr_pos == position) {
-        //
-        //        // SinglyLinkedListNode* new_node = new SinglyLinkedListNode(data);
-        //
-        //        if (is_empty()) {
-        //            insert_node(data);
-        //        } // else if 
-        //        curr_pos++;
-        //    }
-        //}
+            // Insert to an empty llist or to the end of the llist
+            if (is_empty() || position == m_size) {
+                insert_node(data);
+            }
+            else {
+
+                // Loop until current position is the desired position (or until position is -1)
+                SinglyLinkedListNode* curr = m_head;
+
+                while (position-- + 1) {
+                    if (position == -1) {
+
+                        SinglyLinkedListNode* new_node = new SinglyLinkedListNode(data);
+
+                        // Pointer assignment of current node and new node
+                        new_node->m_next = curr;
+                        curr = new_node;
+                        print();
+
+                    } else {
+                        curr = curr->m_next;
+                    }
+                }
+                m_size++;
+            }
+        }
     }
     bool is_empty() {
         return m_head ? false : true;
@@ -123,44 +130,21 @@ public:
 int main()
 {
     SinglyLinkedList* llist = new SinglyLinkedList();
-    llist->insert_node_at(0, llist->size() + 1);
-    llist->insert_node_at(0, 0);
-    llist->insert_node_at(0, -1);
-    llist->insert_node_at(1, llist->size());
-    llist->insert_node_at(1, llist->size() + 1);
-
-    std::cout << llist->is_empty() << '\n';
-    std::cout << llist->size() << '\n';
     llist->print();
 
-    // llist->insert_node_at(100, 1);
-    // std::cout << llist->is_empty() << '\n';
-    // std::cout << llist->size() << '\n';
-    // llist->print();
-    // 
-    // llist->insert_node_at(100, -1);
-    // std::cout << llist->is_empty() << '\n';
-    // std::cout << llist->size() << '\n';
-    // llist->print();
-    // 
-    // llist->insert_node_at(500, llist->size()-1);
-    // std::cout << llist->is_empty() << '\n';
-    // std::cout << llist->size() << '\n';
-    // llist->print();
-    // 
-    // llist->insert_node_at(600, llist->size() );
-    // std::cout << llist->is_empty() << '\n';
-    // std::cout << llist->size() << '\n';
-    // llist->print();
-    // llist->insert_node_at(600, llist->size() + 1);
-    // std::cout << llist->is_empty() << '\n';
-    // std::cout << llist->size() << '\n';
-    // llist->print();
-    // 
-    // llist->insert_node_at(400, 4);
-    // std::cout << llist->is_empty() << '\n';
-    // std::cout << llist->size() << '\n';
-    // llist->print();
+    llist->insert_node_at(0, 0);
+    llist->print();
+
+    llist->insert_node_at(1, llist->size());
+    llist->print();
+
+    llist->insert_node_at(100, 0);
+    llist->print();
+
+    llist->insert_node_at(100, 1);
+    llist->insert_node_at(100, 2);
+    llist->insert_node_at(900, 1);
+    llist->print();
 
     //SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
     //llist->size();
