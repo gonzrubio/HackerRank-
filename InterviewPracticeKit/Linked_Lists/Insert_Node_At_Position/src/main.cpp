@@ -23,6 +23,8 @@ struct SinglyLinkedListNode {
 
 
 class SinglyLinkedList {
+    // Can make template to sccept any data type
+    // Need destructor and clean up memory??
 private:
     SinglyLinkedListNode* m_head;
     SinglyLinkedListNode* m_tail;
@@ -32,8 +34,13 @@ public:
     SinglyLinkedList() : m_head{ nullptr }, m_tail{ nullptr }, m_size{ 0 } 
     {
     }
+    SinglyLinkedList(std::vector<int>& data) : m_head{ nullptr }, m_tail{ nullptr }, m_size{ 0 } {
+        for (const auto& elem : data) {
+            insert_node(elem);
+        }
+    }
     void insert_node(const int data) {
-        // Insert node at the end of the linked list O(1).
+        // Insert node at the end of the linked list O(1)
 
         SinglyLinkedListNode* new_node = new SinglyLinkedListNode(data);
         
@@ -46,26 +53,55 @@ public:
         m_tail = new_node;
         m_size++;
     }
-    // void insert_node_at(const int data, const int position) {
-    // O(1)
-    // }
-    // remove at O(1)
-    // remove value O(n)
+    void insert_node_at(const int data, const int position) {
+        // Insert node at 'position' jumps from head O(1)
+
+        // Bounds check
+        if (position < 0 || position > m_size) {
+            std::cout << "Specified position is out of bounds\n";
+            return;
+        }
+        
+        // Insert to an empty list or at the end of the list
+        if (is_empty() || (position == m_size)) {
+            insert_node(data);
+            return;
+        }
+
+        // Insert anywhere else
+        //int curr_pos{ 0 };
+        //while (curr_pos < position + 1) {
+        //    if (curr_pos == position) {
+        //
+        //        // SinglyLinkedListNode* new_node = new SinglyLinkedListNode(data);
+        //
+        //        if (is_empty()) {
+        //            insert_node(data);
+        //        } // else if 
+        //        curr_pos++;
+        //    }
+        //}
+    }
     bool is_empty() {
         return m_head ? false : true;
     }
-    int size() {
-        return m_size;
-    }
     void print() {
-        if (is_empty()) return; // need this here or handles empty lists automatically?
+        if (is_empty()) return;
+
         SinglyLinkedListNode* curr{ m_head };
-        while (curr) { // I think this handles the empty case.
+        while (curr) {
             std::cout << curr->m_data << "->";
             curr = curr->m_next;
         }
         std::cout << "NULL\n";
     }
+    int size() {
+        return m_size;
+    }
+    // remove at O(1)
+    // remove value O(n)
+    // reverse O(n)
+    // empty O(n)
 };
 
 
@@ -87,23 +123,48 @@ public:
 int main()
 {
     SinglyLinkedList* llist = new SinglyLinkedList();
-    std::cout << llist->is_empty() << '\n';
-    std::cout << llist->size() << '\n';
-    llist->print();
-
-    std::vector<int> nodes{ 1, 2, 3};
-    for (std::size_t i = 0; i < nodes.size(); i++) {
-        llist->insert_node(nodes[i]);
-    }
+    llist->insert_node_at(0, llist->size() + 1);
+    llist->insert_node_at(0, 0);
+    llist->insert_node_at(0, -1);
+    llist->insert_node_at(1, llist->size());
+    llist->insert_node_at(1, llist->size() + 1);
 
     std::cout << llist->is_empty() << '\n';
     std::cout << llist->size() << '\n';
     llist->print();
 
-
-    // SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
-    // llist->size();
+    // llist->insert_node_at(100, 1);
+    // std::cout << llist->is_empty() << '\n';
+    // std::cout << llist->size() << '\n';
     // llist->print();
+    // 
+    // llist->insert_node_at(100, -1);
+    // std::cout << llist->is_empty() << '\n';
+    // std::cout << llist->size() << '\n';
+    // llist->print();
+    // 
+    // llist->insert_node_at(500, llist->size()-1);
+    // std::cout << llist->is_empty() << '\n';
+    // std::cout << llist->size() << '\n';
+    // llist->print();
+    // 
+    // llist->insert_node_at(600, llist->size() );
+    // std::cout << llist->is_empty() << '\n';
+    // std::cout << llist->size() << '\n';
+    // llist->print();
+    // llist->insert_node_at(600, llist->size() + 1);
+    // std::cout << llist->is_empty() << '\n';
+    // std::cout << llist->size() << '\n';
+    // llist->print();
+    // 
+    // llist->insert_node_at(400, 4);
+    // std::cout << llist->is_empty() << '\n';
+    // std::cout << llist->size() << '\n';
+    // llist->print();
+
+    //SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
+    //llist->size();
+    //llist->print();
 
     return 0;
 }
