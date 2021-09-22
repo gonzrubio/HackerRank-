@@ -12,143 +12,99 @@
 #include <vector>
 
 
-struct SinglyLinkedListNode {
-    int m_data;
-    SinglyLinkedListNode* m_next;
+class SinglyLinkedListNode {
+public:
+    int data;
+    SinglyLinkedListNode* next;
 
-    SinglyLinkedListNode(const int data) : m_data{ data }, m_next{ nullptr }
-    {
+    SinglyLinkedListNode(int node_data, SinglyLinkedListNode* next=nullptr) {
+        this->data = node_data;
+        this->next = next;
     }
 };
 
 
 class SinglyLinkedList {
-    // Can make template to sccept any data type
-    // Need destructor and clean up memory??
-private:
-    SinglyLinkedListNode* m_head;
-    SinglyLinkedListNode* m_tail;
-    int m_size;
-
 public:
-    SinglyLinkedList() : m_head{ nullptr }, m_tail{ nullptr }, m_size{ 0 } 
-    {
-    }
-    SinglyLinkedList(std::vector<int>& data) : m_head{ nullptr }, m_tail{ nullptr }, m_size{ 0 } {
-        for (const auto& elem : data) {
-            insert_node(elem);
-        }
-    }
-    void insert_node(const int data) {
-        // Insert node at the end of the linked list O(1)
+    SinglyLinkedListNode* head;
+    SinglyLinkedListNode* tail;
 
-        SinglyLinkedListNode* new_node = new SinglyLinkedListNode(data);
-        
-        if (is_empty()) {  
-            m_head = new_node;
-        }
-        else{
-            m_tail->m_next = new_node;
-        }
-        m_tail = new_node;
-        m_size++;
+    SinglyLinkedList() {
+        this->head = nullptr;
+        this->tail = nullptr;
     }
-    void insert_node_at(const int data, int position) {
-        // Insert node at 'position' jumps from head O(1)
 
-        // Bounds check
-        if (position < 0 || position > m_size) {
-            std::cout << "Specified position is out of bounds\n";
+    void insert_node(int node_data) {
+        SinglyLinkedListNode* node = new SinglyLinkedListNode(node_data);
+
+        if (!this->head) {
+            this->head = node;
         }
         else {
-
-            // Insert to an empty llist or to the end of the llist
-            if (is_empty() || position == m_size) {
-                insert_node(data);
-            }
-            else {
-
-                // Loop until current position is the desired position (or until position is -1)
-                SinglyLinkedListNode* curr = m_head;
-
-                while (position-- + 1) {
-                    if (position == -1) {
-
-                        SinglyLinkedListNode* new_node = new SinglyLinkedListNode(data);
-
-                        // Pointer assignment of current node and new node
-                        new_node->m_next = curr;
-                        curr = new_node;
-                        print();
-
-                    } else {
-                        curr = curr->m_next;
-                    }
-                }
-                m_size++;
-            }
+            this->tail->next = node;
         }
-    }
-    bool is_empty() {
-        return m_head ? false : true;
-    }
-    void print() {
-        if (is_empty()) return;
 
-        SinglyLinkedListNode* curr{ m_head };
-        while (curr) {
-            std::cout << curr->m_data << "->";
-            curr = curr->m_next;
-        }
-        std::cout << "NULL\n";
+        this->tail = node;
     }
-    int size() {
-        return m_size;
-    }
-    // remove at O(1)
-    // remove value O(n)
-    // reverse O(n)
-    // empty O(n)
 };
 
 
-// SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data, int position) {
-// 	/*
-//      * Inputs: 
-// 	 * head: a SinglyLinkedListNode pointer to the head of the list
-// 	 * The function accepts following parameters:
-// 	 * data: an integer value to insert as data in your new node
-// 	 * position: an integer position to insert the new node, zero based indexing
-//      * 
-//      * Returns:
-//      * SinglyLinkedListNode pointer: a reference to the head of the revised list
-// 	 */
-//     return head;
-// }
+void print_singly_linked_list(SinglyLinkedListNode* head) {
+
+    if (head) {
+        SinglyLinkedListNode* curr = head;
+
+        while (curr) {
+            std::cout << curr->data << "->";
+            curr = curr->next;
+        }
+        std::cout << "NULL\n";
+    }
+}
 
 
-int main()
-{
-    SinglyLinkedList* llist = new SinglyLinkedList();
-    llist->print();
+SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data, int position) {
+	/*
+     * Inputs: 
+	 * head: a SinglyLinkedListNode pointer to the head of the list
+	 * The function accepts following parameters:
+	 * data: an integer value to insert as data in your new node
+	 * position: an integer position to insert the new node, zero based indexing
+     * 
+     * Returns:
+     * SinglyLinkedListNode pointer: a reference to the head of the revised list
+	 */
 
-    llist->insert_node_at(0, 0);
-    llist->print();
+    SinglyLinkedListNode** p = &head;
+    for (int i = 0; i < position; ++i)
+        p = &(*p)->next;
+    *p = new SinglyLinkedListNode{ data, *p };
 
-    llist->insert_node_at(1, llist->size());
-    llist->print();
+    return head;
+}
 
-    llist->insert_node_at(100, 0);
-    llist->print();
 
-    llist->insert_node_at(100, 1);
-    llist->insert_node_at(100, 2);
-    llist->insert_node_at(900, 1);
-    llist->print();
+int main() {
+ 
+    std::vector<int> list{ 1 ,2, 3 };
+    int position{ 2 }, data{ 4 };
 
-    //SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
-    //llist->size();
-    //llist->print();
+    SinglyLinkedList* llist{ new SinglyLinkedList() };
+    print_singly_linked_list(llist->head);
+
+    for (const auto& elem : list) {
+        llist->insert_node(elem);
+    }
+    print_singly_linked_list(llist->head);
+
+    SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
+    print_singly_linked_list(llist_head);
+
+    llist_head = insertNodeAtPosition(llist->head, data, 0);
+    print_singly_linked_list(llist_head);
+
+    llist_head = insertNodeAtPosition(llist->head, data, -1);
+    print_singly_linked_list(llist_head);
 
     return 0;
 }
